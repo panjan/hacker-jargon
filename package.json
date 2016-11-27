@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/panjan/hacker-jargon#readme",
   "dependencies": {
-    "express": "^4.14.0"
+    "express": "^4.14.0",
+    "request": "^2.79.0"
   }
 }
