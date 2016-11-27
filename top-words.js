@@ -28,13 +28,13 @@ exports.inStoryTitles = (res) => {
     .then((titles) => res.send(topWords(titles.join(' '))));
 };
 
-// TODO
 exports.inPostTitles = (res) => {
+  res.send(500, { error: 'not implemented' });
   HNAPI.getLastWeeksTitles()
     .then((titles) => res.send({ words: titles }));
 };
 
-// TODO
 exports.inHighKarmaStoryTitles = (res) => {
+  res.send(500, { error: 'not implemented' });
   res.send({ words: ['foo', 'bar'] });
 };
