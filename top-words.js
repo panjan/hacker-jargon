@@ -28,10 +28,13 @@ exports.inStoryTitles = (res) => {
     .then((titles) => res.send(topWords(titles.join(' '))));
 };
 
+// TODO
 exports.inPostTitles = (res) => {
-  res.send({ words: ['foo', 'bar'] });
+  HNAPI.getLastWeeksTitles()
+    .then((titles) => res.send({ words: titles }));
 };
 
+// TODO
 exports.inHighKarmaStoryTitles = (res) => {
   res.send({ words: ['foo', 'bar'] });
 };
