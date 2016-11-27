@@ -1,28 +1,6 @@
-const request = require('request');
-
-const baseAddress = 'https://hacker-news.firebaseio.com/v0';
-
-function getTitle(id) {
-  return new Promise((resolve, reject) => {
-    request.get(
-      `${baseAddress}/item/${id}.json`,
-      (error, response, body) => {
-        if (error) reject(error);
-        resolve(JSON.parse(body).title);
-      });
-  });
-}
-
-function getTitles(storyIds) {
-  const titlePromises = [];
-  for(let id of storyIds) {
-    titlePromises.push(getTitle(id));
-  }
-  return Promise.all(titlePromises);
-}
+const HNAPI = require('./hacker-news-api');
 
 function topWords(text) {
-  const unique = Array.from(new Set(text.split(' ')));
   const frequencies = wordFrequency(text);
   const topWords = Object.keys(frequencies)
     .sort((a, b) => frequencies[b] - frequencies[a])
@@ -45,15 +23,9 @@ function wordFrequency(string) {
 }
 
 exports.inStoryTitles = (res) => {
-  request.get(
-    baseAddress + '/newstories.json',
-    (error, response, body) => {
-      if (error) res.send(error);
-      const ids = JSON.parse(body);
-      getTitles(ids.slice(0, 25))
-        .then((titles) => res.send(topWords(titles.join(' '))))
-        .catch((err) => res.send(err));
-    });
+  HNAPI.getNewStoryIds()
+    .then((ids) => HNAPI.getTitles(ids.slice(0, 25)))
+    .then((titles) => res.send(topWords(titles.join(' '))));
 };
 
 exports.inPostTitles = (res) => {
