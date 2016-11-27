@@ -1,0 +1,19 @@
+{
+  "name": "hacker-jargon",
+  "version": "1.0.0",
+  "description": "Looks up most occuring words on Hacker News.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/panjan/hacker-jargon.git"
+  },
+  "author": "Jan Zdráhal",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/panjan/hacker-jargon/issues"
+  },
+  "homepage": "https://github.com/panjan/hacker-jargon#readme"
+}
