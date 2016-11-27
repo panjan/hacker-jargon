@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/panjan/hacker-jargon/issues"
   },
-  "homepage": "https://github.com/panjan/hacker-jargon#readme"
+  "homepage": "https://github.com/panjan/hacker-jargon#readme",
+  "dependencies": {
+    "express": "^4.14.0"
+  }
 }
