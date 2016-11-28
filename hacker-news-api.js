@@ -62,10 +62,15 @@ exports.getLastWeeksTitles = () => {
 function walkItems(id, targetTime) {
   return new Promise((resolve, reject) => {
     getManyItems(id, 100).then((items) => {
-      const itemTime = new Date(items[items.length - 1].time * 1000);
-      console.log('item time: ' + itemTime)
-      console.log('target time: ' + targetTime)
-      itemTime < targetTime ? resolve(items) : walkItems(id - 100, targetTime).then((result) => resolve(items.concat(result)));
+      const lastItemTime = new Date(items[items.length - 1].time * 1000);
+      console.log('item time: ' + lastItemTime);
+      console.log('target time: ' + targetTime);
+      if (lastItemTime < targetTime) {
+        const youngerItems = items.find((x) => x.time && new Date(x.time * 1000) < targetTime);
+        resolve(youngerItems);
+      } else {
+        walkItems(id - 100, targetTime).then((result) => resolve(items.concat(result)));
+      }
     });
   });
 }
