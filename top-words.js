@@ -34,9 +34,12 @@ exports.inStoryTitles = (res) => {
 };
 
 exports.inPostTitles = (res) => {
-  res.send(500, { error: 'not implemented' });
   HNAPI.getLastWeeksTitles()
-    .then((titles) => res.send({ words: titles }));
+    .then((titles) => {
+      const words = topWords(titles.join(' '));
+      res.send(words);
+    })
+    .catch((error) => res.send(500, error));
 };
 
 exports.inHighKarmaStoryTitles = (res) => {

@@ -46,21 +46,36 @@ exports.getLastWeeksTitles = () => {
   return new Promise((resolve, reject) => {
     exports.getMaxItemId().then((id) => {
       const weekAgo = new Date();
-      weekAgo.setDate(weekAgo.getDate() - 7);
-      const targetUnixTime = Math.floor(weekAgo.getTime()/1000);
-      walkItems(id, targetUnixTime)
-        .then((titles) => resolve(titles));
+      weekAgo.setDate(weekAgo.getDate() - 14);
+      walkItems(id, weekAgo)
+        .then((items) => {
+          const titles = [];
+          for(item of items) {
+            if(item.title) titles.push(item.title);
+          }
+          resolve(titles);
+        });
     });
   });
 };
 
-function walkItems(id, targetUnixTime) {
+function walkItems(id, targetTime) {
   return new Promise((resolve, reject) => {
-    exports.getItem(id).then((item) => {
-      console.log('targetUnixTime: ' + targetUnixTime);
-      console.log('item.time: ' + item.time);
-      console.log('item.title: ' + item.title);
-      item.time < targetUnixTime ? resolve(id, targetUnixTime) : walkItems(id - 1, targetUnixTime).then((id) => resolve(id));
+    getManyItems(id, 100).then((items) => {
+      const itemTime = new Date(items[items.length - 1].time * 1000);
+      console.log('item time: ' + itemTime)
+      console.log('target time: ' + targetTime)
+      itemTime < targetTime ? resolve(items) : walkItems(id - 100, targetTime).then((result) => resolve(items.concat(result)));
     });
   });
+}
+
+function getManyItems(id, count) {
+  let currentId = id;
+  const promises = [];
+  while(currentId > id - count) {
+    promises.push(exports.getItem(currentId));
+    currentId--;
+  }
+  return Promise.all(promises);
 }
