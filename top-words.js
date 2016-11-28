@@ -24,8 +24,13 @@ function wordFrequency(string) {
 
 exports.inStoryTitles = (res) => {
   HNAPI.getNewStoryIds()
-    .then((ids) => HNAPI.getTitles(ids.slice(0, 25)))
-    .then((titles) => res.send(topWords(titles.join(' '))));
+    .then((ids) => HNAPI.getItems(ids.slice(0, 25)))
+    .then((items) => {
+      const titles = items.map((x) => x.title);
+      const words = topWords(titles.join(' '));
+      res.send(words);
+    })
+    .catch((error) => res.send(500, error));
 };
 
 exports.inPostTitles = (res) => {

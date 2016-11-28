@@ -12,10 +12,10 @@ exports.getItem = (id) => {
   });
 };
 
-exports.getTitles = (ids) => {
+exports.getItems = (ids) => {
   const titlePromises = [];
   for(let id of ids) {
-    titlePromises.push(exports.getItem(id).title);
+    titlePromises.push(exports.getItem(id));
   }
   return Promise.all(titlePromises);
 };
